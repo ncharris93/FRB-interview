@@ -1,13 +1,17 @@
 import './App.css'
 import { UserContainer } from './containers/UserContainer'
-import { Route, Router, Switch, useHistory } from 'react-router-dom'
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  useHistory,
+} from 'react-router-dom'
 
 function App() {
-  const history = useHistory()
   return (
     <div className="App">
       <header className="App-header">
-        <Router history={history}>
+        <Router>
           <Switch>
             <Route path="/">
               <UserContainer />
