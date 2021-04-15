@@ -1,30 +1,66 @@
-import { VFC } from 'react'
-import { makeStyles, Theme } from '@material-ui/core'
-import { useTable, Column } from 'react-table'
+import {
+  Button,
+  IconButton,
+  makeStyles,
+  Popover,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Theme,
+} from '@material-ui/core'
+import { MoreHoriz } from '@material-ui/icons'
+import React, { useMemo, useState, VFC } from 'react'
+import { Cell, Column, useTable } from 'react-table'
 
 import { User } from '../../__data__/users'
 
-const columns: Column<User>[] = [
-  {
-    Header: 'First Name',
-    accessor: 'firstName',
-  },
-  {
-    Header: 'Last Name',
-    accessor: 'lastName',
-  },
-  {
-    Header: 'Phone',
-    accessor: 'phone',
-  },
-  {
-    Header: 'Email',
-    accessor: 'email',
-  },
-]
-
 export const UserTable: VFC<{ users: User[] }> = ({ users }) => {
   const classes = useUserTableStyles()
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+
+  const columns: Column<User>[] = useMemo(
+    () => [
+      {
+        Header: 'First Name',
+        accessor: 'firstName',
+        minWidth: 200,
+      },
+      {
+        Header: 'Last Name',
+        accessor: 'lastName',
+        minWidth: 200,
+      },
+      {
+        Header: 'Phone',
+        accessor: 'phone',
+        minWidth: 400,
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+        minWidth: 400,
+      },
+      {
+        Header: 'Actions',
+        Cell: (data: Cell) => {
+          return (
+            <div className={classes.actionCell}>
+              <IconButton
+                onClick={e => {
+                  setAnchorEl(e.currentTarget)
+                }}
+              >
+                <MoreHoriz />
+              </IconButton>
+            </div>
+          )
+        },
+      },
+    ],
+    [classes.actionCell]
+  )
 
   const {
     getTableProps,
@@ -39,33 +75,57 @@ export const UserTable: VFC<{ users: User[] }> = ({ users }) => {
 
   return (
     <div data-testid="user-table" className={classes.container}>
-      <table {...getTableProps()}>
-        <thead>
+      <Table {...getTableProps()}>
+        <TableHead>
           {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <TableCell {...column.getHeaderProps()}>
+                  {column.render('Header')}
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
+        </TableHead>
+        <TableBody {...getTableBodyProps()}>
           {rows.map(row => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()}>
+              <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return (
+                    <TableCell {...cell.getCellProps()}>
+                      {cell.render('Cell')}
+                    </TableCell>
+                  )
                 })}
-              </tr>
+              </TableRow>
             )
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
+
+      <Popover
+        open={!!anchorEl}
+        onClose={() => {
+          setAnchorEl(null)
+        }}
+        anchorEl={anchorEl}
+      >
+        <Button onClick={() => {}}>View</Button>
+        <Button onClick={() => {}}>Update</Button>
+        <Button onClick={() => {}}>Create</Button>
+      </Popover>
     </div>
   )
 }
 
 const useUserTableStyles = makeStyles((theme: Theme) => ({
-  container: {},
+  container: { backgroundColor: 'white', borderRadius: 5 },
+  actionCell: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }))
