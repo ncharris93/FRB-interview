@@ -11,13 +11,16 @@ import {
   Theme,
 } from '@material-ui/core'
 import { MoreHoriz } from '@material-ui/icons'
-import React, { useMemo, useState, VFC } from 'react'
+import { useMemo, useState, VFC } from 'react'
+import { useHistory } from 'react-router'
 import { Cell, Column, useTable } from 'react-table'
 
 import { User } from '../../__data__/users'
 
 export const UserTable: VFC<{ users: User[] }> = ({ users }) => {
   const classes = useUserTableStyles()
+  const history = useHistory<User>()
+  const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const columns: Column<User>[] = useMemo(
@@ -49,6 +52,7 @@ export const UserTable: VFC<{ users: User[] }> = ({ users }) => {
             <div className={classes.actionCell}>
               <IconButton
                 onClick={e => {
+                  setSelectedUser(data.row.original as User)
                   setAnchorEl(e.currentTarget)
                 }}
               >
@@ -112,16 +116,34 @@ export const UserTable: VFC<{ users: User[] }> = ({ users }) => {
         }}
         anchorEl={anchorEl}
       >
-        <Button onClick={() => {}}>View</Button>
-        <Button onClick={() => {}}>Update</Button>
-        <Button onClick={() => {}}>Create</Button>
+        <Button
+          onClick={() => {
+            history.push('/user-view', selectedUser)
+          }}
+        >
+          View
+        </Button>
+        <Button
+          onClick={() => {
+            history.push('/user-form', selectedUser)
+          }}
+        >
+          Update
+        </Button>
+        <Button
+          onClick={() => {
+            history.push('/user-form')
+          }}
+        >
+          Create
+        </Button>
       </Popover>
     </div>
   )
 }
 
 const useUserTableStyles = makeStyles((theme: Theme) => ({
-  container: { backgroundColor: 'white', borderRadius: 5 },
+  container: { backgroundColor: 'white', borderRadius: 5, width: '80%' },
   actionCell: {
     display: 'flex',
     flexDirection: 'row',
