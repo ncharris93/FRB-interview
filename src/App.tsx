@@ -1,25 +1,30 @@
 import './App.css'
 import { UserContainer } from './containers/UserContainer'
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from 'react-router-dom'
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import React from 'react'
+import { UserForm } from './components/pages/UserForm'
+import { UserView } from './components/pages/UserView'
+import { UserContextProvider } from './hooks/Users/user.context'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Router>
-          <Switch>
-            <Route path="/">
-              <UserContainer />
-            </Route>
-            <Route path="/user-form">{/* <UserForm /> */}</Route>
-            <Route path="/user-view">{/* <UserView /> */}</Route>
-          </Switch>
-        </Router>
+        <UserContextProvider>
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <UserContainer />
+              </Route>
+              <Route path="/user-form">
+                <UserForm />
+              </Route>
+              <Route path="/user-view">
+                <UserView />
+              </Route>
+            </Switch>
+          </Router>
+        </UserContextProvider>
       </header>
     </div>
   )
