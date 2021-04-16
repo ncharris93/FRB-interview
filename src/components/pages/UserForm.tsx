@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import { makeStyles, Theme, Input, TextField } from '@material-ui/core'
+import { useHistory } from 'react-router'
+import _ from 'lodash'
+import { useForm, Controller } from 'react-hook-form'
 
 import { User } from '../../__data__/users'
-import { useForm, Controller } from 'react-hook-form'
-import { useHistory } from 'react-router'
 import { useUsers } from '../../hooks/Users/useUsers'
-import _ from 'lodash'
 
 export const UserForm: FC<{ user?: User }> = ({ user }) => {
   const classes = useUserFormStyles()

@@ -1,4 +1,5 @@
 import { createContext, useState, FC, Dispatch, SetStateAction } from 'react'
+
 import { User, userData } from '../../__data__/users'
 
 export const UserContext = createContext<

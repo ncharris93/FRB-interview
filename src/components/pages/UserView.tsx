@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import { Button, makeStyles, Theme, TextField } from '@material-ui/core'
 import { useHistory } from 'react-router'
-import { User } from '../../__data__/users'
 import _ from 'lodash'
+
+import { User } from '../../__data__/users'
 
 export const UserView: FC<{ user?: User }> = ({ user }) => {
   const classes = useUserViewStyles()

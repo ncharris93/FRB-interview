@@ -1,7 +1,8 @@
 import './App.css'
-import { UserContainer } from './containers/UserContainer'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import React from 'react'
+
+import { UserContainer } from './containers/UserContainer'
 import { UserForm } from './components/pages/UserForm'
 import { UserView } from './components/pages/UserView'
 import { UserContextProvider } from './hooks/Users/user.context'
